@@ -17,6 +17,7 @@ from esphome.const import (
     UNIT_WATT,
     UNIT_PERCENT,
     CONF_TIME_ID,
+    CONF_TEXT_SENSORS,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -35,7 +36,10 @@ CONF_COST_PER_KWH = "cost_per_kwh"
 CONF_POWERPAL_DEVICE_ID = "powerpal_device_id"
 CONF_POWERPAL_APIKEY = "powerpal_apikey"
 CONF_DAILY_ENERGY = "daily_energy"
-
+CONF_WATT_HOURS = "watt_hours"
+CONF_TIME_STAMP = "timestamp"
+CONF_PULSES = "pulses"
+CONF_COST = "cost"
 
 def _validate(config):
     if CONF_DAILY_ENERGY in config and CONF_TIME_ID not in config:
@@ -109,6 +113,12 @@ CONFIG_SCHEMA = cv.All(
                 device_class=DEVICE_CLASS_ENERGY,
                 state_class=STATE_CLASS_TOTAL_INCREASING,
             ),
+            cv.Optional(CONF_WATT_HOURS): sensor.sensor_schema(),
+            cv.Optional(CONF_PULSES): sensor.sensor_schema(),
+            cv.Optional(CONF_TIME_STAMP): sensor.sensor_schema(),
+            cv.Optional(CONF_COST): sensor.sensor_schema(
+                accuracy_decimals=11
+            ),
             cv.Required(CONF_PAIRING_CODE): cv.int_range(min=1, max=999999),
             cv.Required(CONF_NOTIFICATION_INTERVAL): cv.int_range(min=1, max=60),
             cv.Required(CONF_PULSES_PER_KWH): cv.float_range(min=1),
@@ -154,6 +164,22 @@ async def to_code(config):
     if CONF_DAILY_ENERGY in config:
         sens = await sensor.new_sensor(config[CONF_DAILY_ENERGY])
         cg.add(var.set_daily_energy_sensor(sens))
+
+    if CONF_PULSES in config:
+        sens = await sensor.new_sensor(config[CONF_PULSES])
+        cg.add(var.set_pulses_sensor(sens))
+
+    if CONF_WATT_HOURS in config:
+        sens = await sensor.new_sensor(config[CONF_WATT_HOURS])
+        cg.add(var.set_watt_hours(sens))
+
+    if CONF_TIME_STAMP in config:
+        sens = await sensor.new_sensor(config[CONF_TIME_STAMP])
+        cg.add(var.set_timestamp(sens))
+
+    if CONF_COST in config:
+        sens = await sensor.new_sensor(config[CONF_COST])
+        cg.add(var.set_cost_sensor(sens))
 
     if CONF_PAIRING_CODE in config:
         cg.add(var.set_pairing_code(config[CONF_PAIRING_CODE]))
