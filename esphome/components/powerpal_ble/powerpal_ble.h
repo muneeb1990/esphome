@@ -5,7 +5,7 @@
 #include "esphome/components/esp32_ble_tracker/esp32_ble_tracker.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/core/defines.h"
-#include "esphome.h"
+#include "esphome/core/helpers.h"
 
 #ifdef USE_TIME
 #include "esphome/components/time/real_time_clock.h"
