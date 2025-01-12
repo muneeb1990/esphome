@@ -78,7 +78,7 @@ void Powerpal::parse_measurement_(const uint8_t *data, uint16_t length) {
     }
 
     if (this->watt_hours_sensor_ != nullptr) {
-      int mywatt_hrs = (uint32_t)roundf(pulses_within_interval * (this->pulses_per_kwh_ / kw_to_w_conversion));
+      int mywatt_hrs = (uint32_t)roundf(((float)pulses_within_interval) / (this->pulses_per_kwh_ / kw_to_w_conversion));
        this->watt_hours_sensor_->publish_state(mywatt_hrs);
     }
      if (this->timestamp_sensor_ != nullptr) {
