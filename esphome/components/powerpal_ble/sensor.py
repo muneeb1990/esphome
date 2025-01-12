@@ -110,7 +110,11 @@ CONFIG_SCHEMA = cv.All(
                 device_class=DEVICE_CLASS_ENERGY,
                 state_class=STATE_CLASS_TOTAL_INCREASING,
             ),
-            cv.Optional(CONF_WATT_HOURS): sensor.sensor_schema(),
+            cv.Optional(CONF_WATT_HOURS): sensor.sensor_schema(
+                unit_of_measurement=UNIT_WATT,
+                accuracy_decimals=4,
+                device_class=DEVICE_CLASS_ENERGY,
+            ),
             cv.Optional(CONF_PULSES): sensor.sensor_schema(),
             cv.Optional(CONF_DAILY_PULSES): sensor.sensor_schema(),
             cv.Optional(CONF_TIME_STAMP): sensor.sensor_schema(),
