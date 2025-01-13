@@ -25,7 +25,7 @@ namespace espbt = esphome::esp32_ble_tracker;
 struct PowerpalMeasurement {
   uint16_t pulses;
   time_t timestamp;
-  uint32_t watt_hours;
+  float watt_hours;
   float cost;
   // bool is_peak;
 };
